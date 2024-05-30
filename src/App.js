@@ -52,28 +52,12 @@ const columns = [
   // },
 ];
 
-const dataaaa = [];
-
-for (var i = 0; i < 100; i++) {
-  dataaaa.push({
-    rowkey: i,
-    policyId: 166020,
-    holderName: "卢洁",
-    holderCertNo: "411481198706270349",
-    productFullName: null,
-    agentName: "卢洁",
-    issueTime: "2024-05-16",
-    pdfFilename: "APL1780906354069233664客户告知书.pdf",
-    pdfFilepath:
-      "/root/better/temp/UploadPDFToZhongAn/APL1780906354069233664客户告知书.pdf",
-  });
-}
 
 const App = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
   const [token, setToken] = React.useState(localStorage.getItem("token"));
-  const [data, setData] = React.useState(dataaaa);
+  const [data, setData] = React.useState([]);
 
   const closeModal = () => {
     setShowModal(false);
@@ -141,6 +125,7 @@ const App = () => {
       const response = await fetch("/api/zhongan/updatepolicy", options);
       
       if (response.ok) {
+        setData([]);
         closeModal();
         Modal.success({
           centered: true,
