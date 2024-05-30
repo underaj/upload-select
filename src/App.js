@@ -117,11 +117,41 @@ const App = () => {
             return { rowkey: i, ...item };
           })
         );
+        setSelectedRowKeys([]);
       }
     } else if (status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
   };
+
+  const saveData = async () => {
+    const postData = [];
+    selectedRowKeys.forEach((key) => {
+      const { policyId, pdfFilepath } = data[key];
+      postData.push({ policyId, pdfFilepath });
+    });
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ policys: postData }),
+    };
+    try {
+      const response = await fetch("/api/zhongan/updatepolicy", options);
+      
+      if (response.ok) {
+        closeModal();
+        Modal.success({
+          centered: true,
+          title: "存档成功",
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   return (
     <div className="App">
       <p className="fieldTitle">Zhongan Token</p>
@@ -161,7 +191,9 @@ const App = () => {
         open={showModal}
         onCancel={closeModal}
         cancelText="取消"
+        onOk={saveData}
         okText="存档"
+        okButtonProps={{ disabled: selectedRowKeys.length === 0 }}
       >
         <div
           style={{ margin: "24px 0", maxHeight: "80vh", overflowX: "scroll" }}
