@@ -85,7 +85,7 @@ const App = () => {
     const value = e.target.value;
     setToken(value);
     localStorage.setItem("token", value);
-    Cookies.set("zhongan-token", value, { expires: 86400, secure: true });
+    Cookies.set("zhongan-token", value, { expires: 86400, path: '' });
   };
 
   const onChange = (info) => {
